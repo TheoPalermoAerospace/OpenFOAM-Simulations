@@ -108,7 +108,7 @@ Validation figures comparing numerical results with experimental data are includ
 
 ## Requirements
 
-- [OpenFOAM](https://www.openfoam.com/) (v2112 or newer recommended)
+- [OpenFOAM](https://openfoam.org/) (V8 or newer recommended)
 - [Gmsh](https://gmsh.info/) (for mesh generation)
 - [ParaView](https://www.paraview.org/) (for post-processing)
 
