@@ -1,0 +1,86 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  8
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      fvSchemes;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+ddtSchemes
+{
+    default         Euler;
+}
+
+gradSchemes
+{
+    default         Gauss linear;
+
+    limited         cellLimited Gauss linear 1;
+
+    grad(U)         $limited;
+    grad(k)         $limited;
+    grad(omega)     $limited;
+
+    grad(e)         $limited;
+    grad(h)         $limited;
+    grad(T)         $limited;
+}
+
+divSchemes
+{
+    default         none;
+
+    // linearUpwind grad(U): segunda ordem com gradiente limitado.
+    // NOTA: "Gauss linearUpwind limited" (original) usa o esquema nomeado
+    // "limited" do gradSchemes e funciona, mas a sintaxe canônica é grad(U).
+    div(phi,U)      Gauss linearUpwind grad(U);
+
+    turbulence      Gauss upwind;
+    div(phi,k)      $turbulence;
+    div(phi,omega)  $turbulence;
+
+    // ALTERAÇÃO: upwind → linearUpwind limited para a equação de energia.
+    // Upwind de primeira ordem difunde a entalpia/energia interna nas regiões
+    // de choque, borrando o gradiente de temperatura e deslocando a posição
+    // dos choques oblíquos. linearUpwind com gradiente limitado mantém a
+    // segunda ordem fora dos choques e aplica limitação nas descontinuidades.
+    energy          Gauss linearUpwind limited;
+    div(phi,e)      $energy;
+    div(phi,K)      $energy;
+    div(phi,Ekp)    $energy;
+
+    div(phiv,p)                           Gauss upwind;
+    div((phi|interpolate(rho)),p)         Gauss upwind;
+
+    div(((rho*nuEff)*dev2(T(grad(U)))))   Gauss linear;
+}
+
+laplacianSchemes
+{
+    default         Gauss linear corrected;
+}
+
+interpolationSchemes
+{
+    default         linear;
+}
+
+snGradSchemes
+{
+    default         corrected;
+}
+
+wallDist
+{
+    method meshWave;
+}
+
+// ************************************************************************* //

@@ -1,0 +1,97 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    p
+    {
+        solver          GAMG;
+        smoother        GaussSeidel;
+        tolerance       1e-8;
+        relTol          0.01;
+    }
+
+    pFinal
+    {
+        $p;
+        relTol          0;
+    }
+
+    // ALTERAÇÃO: relTol 0 → 0.1 para iterações internas.
+    // Com nOuterCorrectors > 1, as iterações internas não precisam convergir
+    // ao limite absoluto — o loop externo corrige o resíduo. relTol 0.1
+    // economiza tempo de CPU sem perda de precisão no resultado final.
+    "(rho|U|k|omega|e)"
+    {
+        solver          PBiCGStab;
+        preconditioner  DILU;
+        tolerance       1e-8;
+        relTol          0.1;
+    }
+
+    // CORREÇÃO: "$U" → especificação explícita.
+    // O bloco original usava "$U", que referencia uma entrada nomeada "U"
+    // no dicionário solvers. Como "U" está capturado pela regex acima e não
+    // existe como chave explícita, "$U" retorna vazio (bug silencioso).
+    "(rho|U|k|omega|e)Final"
+    {
+        solver          PBiCGStab;
+        preconditioner  DILU;
+        tolerance       1e-8;
+        relTol          0;          // na iteração final: convergência total
+    }
+}
+
+PIMPLE
+{
+    // ALTERAÇÃO: nOuterCorrectors 1 → 3
+    // Com nOuterCorrectors = 1 o PIMPLE se comporta como PISO puro:
+    // sem iteração externa, o acoplamento pressão–velocidade–densidade fica
+    // incompleto a cada passo de tempo, causando instabilidade com choques
+    // fortes. 3 iterações externas fecham o acoplamento e permitem Courant
+    // mais alto sem divergência.
+    nOuterCorrectors         3;
+
+    nCorrectors              3;
+    nNonOrthogonalCorrectors 2;
+
+    pMinFactor      0.1;
+    pMaxFactor      2;
+}
+
+relaxationFactors
+{
+    fields
+    {
+        p               0.3;
+
+        // ALTERAÇÃO: rho 0.01 → 0.2
+        // Fator 0.01 significa que a densidade muda apenas 1% por iteração:
+        // a estrutura de choque leva muito mais tempo para se desenvolver e
+        // o solver pode divergir por desbalanço rho–p. 0.2 é conservador
+        // o suficiente para estabilidade e ainda permite evolução razoável.
+        rho             0.2;
+    }
+    equations
+    {
+        U               0.7;
+        e               0.7;
+        "(k|omega)"     0.7;
+    }
+}
+
+// ************************************************************************* //
