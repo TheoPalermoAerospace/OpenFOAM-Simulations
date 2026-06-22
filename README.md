@@ -58,7 +58,7 @@ Transonic flow over the RAE 2822 airfoil, capturing shock-wave formation and int
 | Mesh | Structured (Gmsh) |
 | Regime | Compressible / Transonic |
 
-For both cases (rhoPimpleFoam and rhoCentralFoam), validation of pressure coefficient ($C_p$) distribution is compared against experimental data.
+For both cases (rhoPimpleFoam and rhoCentralFoam), validation of pressure coefficient ($c_p$) distribution is compared against experimental data.
 
 <!-- TODO: add validation figure here -->
 <!-- ![RAE2822 Cp validation](path/to/figure.png) -->
