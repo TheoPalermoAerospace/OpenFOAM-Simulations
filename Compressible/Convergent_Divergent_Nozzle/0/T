@@ -1,0 +1,54 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  8
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// T0 = 1000 K  →  temperatura de estagnação
+// Velocidade sônica na garganta: a* = sqrt(γRT*) = sqrt(1.4*287*833) ≈ 578 m/s
+// Temperatura estática na saída (Ma=1): T* = T0*2/(γ+1) = 833 K
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform 300;
+
+boundaryField
+{
+    inlet
+    {
+        type            totalTemperature;
+        T0              uniform 1000;
+        gamma           1.4;
+        value           uniform 1000;   // <-- necessário (inicialização)
+    }
+    atmosphera
+    {
+        type            inletOutlet;
+        inletValue      uniform 300;
+        value           $internalField;
+    }
+    nozzle
+    {
+        type            zeroGradient;
+    }
+    wedge_1
+    {
+        type            wedge;
+    }
+    wedge_2
+    {
+        type            wedge;
+    }
+}
+
+// ************************************************************************* //

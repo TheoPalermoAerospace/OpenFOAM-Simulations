@@ -1,0 +1,55 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      k;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// CORREÇÃO: "value 37.5" sem "uniform" causa erro em tempo de execução.
+// k = 1.5*(TI*U)^2  →  para TI=5%, U_inlet≈62 m/s  →  k ≈ 14.4 m²/s²
+// Reduzido para 5.0 m²/s² (TI≈3%): turbulência menor deixa os choques
+// mais nítidos e melhora a convergência para o padrão de diamantes.
+
+dimensions      [0 2 -2 0 0 0 0];
+
+internalField   uniform 0.375;
+
+boundaryField
+{
+    inlet
+    {
+        type            fixedValue;
+        value           uniform 5.0;    // CORRIGIDO: "uniform" é obrigatório
+    }
+    atmosphera
+    {
+        type            inletOutlet;
+        inletValue      uniform 0.375;
+        value           $internalField;
+    }
+    nozzle
+    {
+        type            kqRWallFunction;
+        value           uniform 0;
+    }
+    wedge_1
+    {
+        type            wedge;
+    }
+    wedge_2
+    {
+        type            wedge;
+    }
+}
+
+// ************************************************************************* //

@@ -1,0 +1,71 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      p;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// NPR = p0_inlet / p_atm = 5e5 / 101325 ≈ 4.93  →  jato sub-expandido
+// Pressão estática na saída do bocal (Ma=1):
+//   p_exit = p0 * (2/(γ+1))^(γ/(γ-1)) = 5e5 * 0.5283 ≈ 264 150 Pa
+//   p_exit / p_atm ≈ 2.61  →  shock diamonds bem desenvolvidos
+
+dimensions      [1 -1 -2 0 0 0 0];
+
+internalField   uniform 101325;
+
+boundaryField
+{
+    inlet
+    {
+        // Pressão de estagnação imposta: mantém NPR ≈ 4.93
+        // Para diamonds mais fortes: aumente p0 (ex.: 7e5 → NPR ≈ 6.9)
+        // Para diamonds mais fracos : reduza p0 (ex.: 2e5 → NPR ≈ 2.0)
+        type            totalPressure;
+        p0              uniform 5e5;
+        gamma           1.4;
+        value           uniform 5e5;    // <-- necessário (inicialização)
+    }
+
+    atmosphera
+    {
+        // waveTransmissive: absorve ondas de pressão que saem do domínio
+        // sem reflexão — ESSENCIAL para não contaminar o padrão de diamantes.
+        // fixedValue cria reflexões espúrias que distorcem os choques.
+        type            waveTransmissive;
+        field           p;
+        phi             phi;
+        rho             rho;
+        psi             thermo:psi;     // nome correto para rhoPimpleFoam/rhoCentralFoam v9+
+        gamma           1.4;
+        fieldInf        101325;         // pressão atmosférica de referência
+        lInf            1.0;            // distância característica ao campo distante (m)
+        value           uniform 101325;
+    }
+
+    nozzle
+    {
+        type            zeroGradient;
+    }
+
+    wedge_1
+    {
+        type            wedge;
+    }
+
+    wedge_2
+    {
+        type            wedge;
+    }
+}
+
+// ************************************************************************* //
