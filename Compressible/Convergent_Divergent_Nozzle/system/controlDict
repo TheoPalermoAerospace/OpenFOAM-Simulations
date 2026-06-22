@@ -1,0 +1,62 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  8
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     rhoPimpleFoam;
+
+startFrom       latestTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         0.1;
+
+deltaT          1e-8;
+
+adjustTimeStep  yes;
+
+writeControl    adjustableRunTime;
+
+writeInterval   0.002;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision   8;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable true;
+
+maxCo             0.7; // Inicia com 0.2. Transiciona para 0.3, 0.4 etc. apos estabilizar
+
+maxDeltaT       2e-6;
+
+functions
+{
+    // Número de Mach — essencial para visualizar os Shock Diamonds
+    #includeFunc MachNo
+
+    // Monitoramento de resíduos a cada passo de tempo
+    #includeFunc residuals
+}
+
+// ************************************************************************* //
