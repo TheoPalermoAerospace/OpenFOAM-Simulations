@@ -12,6 +12,7 @@ OpenFOAM-Simulations/
 │   ├── NACA0012_CompressibleFlow/
 │   └── RAE2822_Shock/
 |   └── Nozzle/
+|   └── Convergent_Divergent_Nozzle/
 └── incompressible/
     ├── 2D_MultiElementWing/
     ├── NACA0012_StructuredMesh/
@@ -56,6 +57,20 @@ Validation of pressure coefficient ($C_p$) distribution is compared against expe
 ---
 
 #### `Convergent Nozzle`
+
+Simulation of a convergent nozzle.
+
+| Parameter | Value |
+|-----------|-------|
+| Solver | `rhoPimpleFoam` |
+| Mesh | Structured (Gmsh) |
+| Regime | Compressible / Supersonic |
+
+---
+
+#### `Convergent-Divergent Nozzle`
+
+Simulation of a convergent-divergent nozzle.
 
 | Parameter | Value |
 |-----------|-------|
