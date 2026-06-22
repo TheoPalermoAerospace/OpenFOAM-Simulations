@@ -1,4 +1,4 @@
-# OpenFOAM Simulations — External Aerodynamics
+# OpenFOAM Simulations — External & Internal Flows
 
 > A collection of CFD cases for external flow simulations using [OpenFOAM](https://www.openfoam.com/), covering compressible and incompressible regimes. Structured and hybrid meshes are generated with [Gmsh](https://gmsh.info/). Results include validation against experimental data where available.
 
