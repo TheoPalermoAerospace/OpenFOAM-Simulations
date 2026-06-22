@@ -38,20 +38,12 @@ divSchemes
 {
     default         none;
 
-    // linearUpwind grad(U): segunda ordem com gradiente limitado.
-    // NOTA: "Gauss linearUpwind limited" (original) usa o esquema nomeado
-    // "limited" do gradSchemes e funciona, mas a sintaxe canônica é grad(U).
     div(phi,U)      Gauss linearUpwind grad(U);
 
     turbulence      Gauss upwind;
     div(phi,k)      $turbulence;
     div(phi,omega)  $turbulence;
 
-    // ALTERAÇÃO: upwind → linearUpwind limited para a equação de energia.
-    // Upwind de primeira ordem difunde a entalpia/energia interna nas regiões
-    // de choque, borrando o gradiente de temperatura e deslocando a posição
-    // dos choques oblíquos. linearUpwind com gradiente limitado mantém a
-    // segunda ordem fora dos choques e aplica limitação nas descontinuidades.
     energy          Gauss linearUpwind limited;
     div(phi,e)      $energy;
     div(phi,K)      $energy;
