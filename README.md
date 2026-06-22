@@ -11,6 +11,7 @@ OpenFOAM-Simulations/
 ├── compressible/
 │   ├── NACA0012_CompressibleFlow/
 │   └── RAE2822_Shock/
+|   └── RAE2822_Shock_rhoCentralFoam/   
 |   └── Nozzle/
 |   └── Convergent_Divergent_Nozzle/
 └── incompressible/
@@ -47,12 +48,22 @@ Transonic flow over the RAE 2822 airfoil, capturing shock-wave formation and int
 | Mesh | Structured (Gmsh) |
 | Regime | Compressible / Transonic |
 
-Validation of pressure coefficient ($C_p$) distribution is compared against experimental data.
+#### `RAE2822_Shock_rhoCentralFoam`
+
+Transonic flow over the RAE 2822 airfoil, capturing shock-wave formation and interaction with the boundary layer.
+
+| Parameter | Value |
+|-----------|-------|
+| Solver | `rhoCentralFoam` |
+| Mesh | Structured (Gmsh) |
+| Regime | Compressible / Transonic |
+
+For both cases (rhoPimpleFoam and rhoCentralFoam), validation of pressure coefficient ($C_p$) distribution is compared against experimental data.
 
 <!-- TODO: add validation figure here -->
 <!-- ![RAE2822 Cp validation](path/to/figure.png) -->
 
-![RAE2822 Cp validation](assets/figures/RAE2822_Validation.png)
+![RAE2822 Cp validation](assets/figures/RAE_2822_Validation_V2.png)
 
 ---
 
@@ -66,6 +77,8 @@ Simulation of a convergent nozzle.
 | Mesh | Structured (Gmsh) |
 | Regime | Compressible / Supersonic |
 
+![Velocity Field](assets/figures/velocity.gif)
+
 ---
 
 #### `Convergent-Divergent Nozzle`
@@ -77,6 +90,8 @@ Simulation of a convergent-divergent nozzle.
 | Solver | `rhoPimpleFoam` |
 | Mesh | Structured (Gmsh) |
 | Regime | Compressible / Supersonic |
+
+![Velocity Field](assets/figures/velocity_nozzle.gif)
 
 ---
 
