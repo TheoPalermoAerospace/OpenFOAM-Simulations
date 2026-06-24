@@ -131,12 +131,12 @@ Incompressible flow over the NACA 0012 airfoil with an unstructured mesh. Aerody
 | Mesh | Unstructured (Gmsh) |
 | Regime | Incompressible / Subsonic |
 
-Validation figures comparing numerical results with experimental data are included in the case directory.
+Validation figures comparing numerical results with experimental data for AoA = 0° are included in the case directory.
 
 <!-- TODO: add validation figure here -->
 <!-- ![NACA0012 Cl/Cd validation](path/to/figure.png) -->
 
-![RAE2822 Cp validation](assets/figures/ValidacaoNACA_0AoA.png)
+![RAE2822 Cp validation](assets/figures/cp_naca0012_validation.png)
 
 ---
 
