@@ -1,6 +1,6 @@
 # OpenFOAM Simulations — External & Internal Flows
 
-> A collection of CFD cases for external flow simulations using [OpenFOAM](https://www.openfoam.com/), covering compressible and incompressible regimes. Structured and hybrid meshes are generated with [Gmsh](https://gmsh.info/). Results include validation against experimental data where available.
+> A collection of CFD cases for external flow simulations using [OpenFOAM](https://www.openfoam.com/), covering compressible and incompressible regimes. Structured and hybrid meshes are generated with [Gmsh](https://gmsh.info/). Results include validation against experimental data when available.
 
 ---
 
@@ -16,8 +16,9 @@ OpenFOAM-Simulations/
 |   └── Convergent_Divergent_Nozzle/
 └── incompressible/
     ├── 2D_MultiElementWing/
-    ├── NACA0012_StructuredMesh/
+    └── NACA0012_StructuredMesh/
     └── NACA0012_UnstrucMesh/
+    └── Cylinder_Vortex_Street/
 ```
 
 ---
@@ -140,6 +141,20 @@ Validation figures comparing numerical results with experimental data for AoA = 
 
 ---
 
+#### `Cylinder_Vortex_Street`
+
+Incompressible flow past a cylinder at a Reynolds number of 278, which, according to Hermann Schlichting and Klaus Gersten (2017), produces a von Kármán vortex street. This vortex street can be observed below. Other Reynolds number regimes may also be investigated and validated according to Achenbach (1968).
+
+| Parameter | Value |
+|-----------|-------|
+| Solver | `pisoFoam` |
+| Mesh | Structured (Gmsh) |
+| Regime | Incompressible |
+
+![von Karman Vortex Street](assets/figures/velocity_profile_field.gif)
+
+---
+
 ## Upcoming Cases
 
 - **Flow Past a Wedge** — compressible wedge flow with oblique shock relations
@@ -181,8 +196,12 @@ paraFoam
 
 ## References
 
+## References
+
 - NASA Turbulence Modeling Resource — NACA 0012 validation data: <https://tmbwg.github.io/turbmodels/naca0012_val.html>
 - RAE 2822 experimental data: Cook, P. H., McDonald, M. A., & Firmin, M. C. P. (1979). *Aerofoil RAE 2822 — Pressure Distributions and Boundary Layer and Wake Measurements*. AGARD AR-138.
+- Achenbach, E. (1968). Distribution of local pressure and skin friction around a circular cylinder in cross-flow up to $Re=5\times10^{6}$. *Journal of Fluid Mechanics*, 34(4), 625–639.
+- Schlichting, H., & Gersten, K. (2017). *Boundary-Layer Theory*. Springer.
 - OpenFOAM User Guide: <https://www.openfoam.com/documentation>
 - Gmsh documentation: <https://gmsh.info/doc/texinfo/gmsh.html>
 
