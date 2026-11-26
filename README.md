@@ -14,6 +14,8 @@ OpenFOAM-Simulations/
 |   └── RAE2822_Shock_rhoCentralFoam/   
 |   └── Nozzle/
 |   └── Convergent_Divergent_Nozzle/
+|   └── Moses-Stein Nozzle/
+|   └── Rao Nozzle/
 └── incompressible/
     ├── 2D_MultiElementWing/
     └── NACA0012_StructuredMesh/
@@ -93,6 +95,30 @@ Simulation of a convergent-divergent nozzle.
 | Regime | Compressible / Supersonic |
 
 ![Velocity Field](assets/figures/velocity_nozzle.gif)
+
+---
+
+#### `Moses-Stein Nozzle`
+
+Inviscid simulation of Moses-Stein nozzle.
+
+| Parameter | Value |
+|-----------|-------|
+| Solver | `rhoCentralFoam` |
+| Mesh | Structured (Gmsh) |
+| Regime | Compressible / Supersonic |
+
+---
+
+#### `Rao Nozzle`
+
+Inviscid simulation of Rao nozzle.
+
+| Parameter | Value |
+|-----------|-------|
+| Solver | `rhoCentralFoam` |
+| Mesh | Structured (Gmsh) |
+| Regime | Compressible / Supersonic |
 
 ---
 
